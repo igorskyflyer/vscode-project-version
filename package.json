@@ -1,0 +1,129 @@
+{
+	"name": "project-version",
+	"displayName": "Project Version",
+	"publisher": "igordvlpr",
+	"description": "📊 Provides a visual representation of you current npm project. 💪",
+	"version": "1.0.0",
+	"engines": {
+		"vscode": "^1.60.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"base": "esbuild src/extension.js --bundle --outfile=dist/project-version.js --platform=node --external:vscode --target=node14",
+		"vscode:prepublish": "npm run make",
+		"make": "npm run -S base -- --minify",
+		"dev": "npm run -S base -- --sourcemap --watch",
+		"pkg": "vsce package",
+		"pub": "vsce publish"
+	},
+	"galleryBanner": {
+		"color": "#5065E5",
+		"theme": "dark"
+	},
+	"keywords": [
+		"version",
+		"project",
+		"indicator",
+		"statusbar",
+		"utility",
+		"igordvlpr"
+	],
+	"activationEvents": [
+		"workspaceContains:**/package.json",
+		"onCommand:projectVersion.refresh",
+		"onCommand:projectVersion.openPackage",
+		"onCommand:projectVersion.config",
+		"onStartupFinished"
+	],
+	"main": "./dist/project-version.js",
+	"extensionKind": [
+		"ui"
+	],
+	"capabilities": {
+		"untrustedWorkspaces": {
+			"supported": false
+		}
+	},
+	"icon": "./assets/project-version.png",
+	"contributes": {
+		"menus": {
+			"commandPalette": [
+				{
+					"command": "projectVersion.openPackage",
+					"group": "Project Version"
+				},
+				{
+					"command": "projectVersion.refresh",
+					"group": "Project Version"
+				},
+				{
+					"command": "projectVersion.config",
+					"group": "Project Version"
+				}
+			]
+		},
+		"commands": [
+			{
+				"command": "projectVersion.openPackage",
+				"title": "Open project's package.json",
+				"category": "Project Version",
+				"enablement": "workspaceFolderCount >= 1"
+			},
+			{
+				"command": "projectVersion.refresh",
+				"title": "Refresh",
+				"category": "Project Version",
+				"enablement": "workspaceFolderCount >= 1"
+			},
+			{
+				"command": "projectVersion.config",
+				"title": "Config",
+				"category": "Project Version"
+			}
+		],
+		"configuration": [
+			{
+				"title": "Project Version",
+				"properties": {
+					"projectVersion.display": {
+						"type": "string",
+						"description": "The format of project's version shown in the StatusBar.",
+						"default": "Icon and Text",
+						"enum": [
+							"Icon and Text",
+							"Text only",
+							"Custom"
+						],
+						"enumDescriptions": [
+							"Show an icon and the version number.",
+							"Show only the version number.",
+							"Use a custom format, change."
+						]
+					},
+					"projectVersion.customFormat": {
+						"type": "string",
+						"markdownDescription": "Use a custom format of the StatusBar Item.\n\n\n\nAvailable variables are:\n\n- ${name} - project's name,\n\n- ${version} - project's version.\n\n\n\nExample: **${name} - v.${version}**.\n\n\n\nAll [Codicons](https://code.visualstudio.com/api/references/icons-in-labels) and emojis are available as well.\n\nUnknown variables will be stripped out."
+					}
+				}
+			}
+		]
+	},
+	"devDependencies": {
+		"@types/vscode": "^1.60.0",
+		"@types/node": "14.x"
+	},
+	"license": "SEE LICENSE IN LICENSE.txt",
+	"bugs": {
+		"url": "https://github.com/igorskyflyer/vscode-project-version/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/igorskyflyer/vscode-project-version.git"
+	},
+	"homepage": "https://github.com/igorskyflyer/vscode-project-version/blob/main/README.md"
+}
