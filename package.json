@@ -49,7 +49,7 @@
 			"supported": false
 		}
 	},
-	"icon": "./assets/project-version.png",
+	"icon": "assets/project-version.png",
 	"contributes": {
 		"menus": {
 			"commandPalette": [
