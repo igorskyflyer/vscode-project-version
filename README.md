@@ -1,6 +1,6 @@
 # Project Version 👀
 
-📊 Provides a visual representation of you current npm project. 💪
+📊 Provides a visual representation of you current npm project's version. 💪
 
 <br>
 
