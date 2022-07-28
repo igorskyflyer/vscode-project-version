@@ -5,7 +5,7 @@
 	"description": "📊 Provides a visual representation of you current npm project's version. 💪",
 	"version": "1.0.1",
 	"engines": {
-		"vscode": "^1.60.0"
+		"vscode": "^1.69.0"
 	},
 	"categories": [
 		"Other"
@@ -132,7 +132,7 @@
 		]
 	},
 	"devDependencies": {
-		"@types/vscode": "^1.60.0",
+		"@types/vscode": "^1.69.0",
 		"@types/node": "14.x"
 	},
 	"license": "SEE LICENSE IN LICENSE.txt",
