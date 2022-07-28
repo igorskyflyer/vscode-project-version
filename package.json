@@ -112,13 +112,14 @@
 					"projectVersion.statusAlignment": {
 						"type": "string",
 						"enum": [
-							"Left",
-							"Right"
+							"Right",
+							"Left"
 						],
 						"enumDescriptions": [
 							"Show the statusbar item on the left",
 							"Show the statusbar item on the right"
-						]
+						],
+						"default": "Right"
 					}
 				}
 			}
