@@ -121,6 +121,11 @@
 							"Show the statusbar item on the right"
 						],
 						"default": "Right"
+					},
+					"projectVersion.statusPriority": {
+						"type": "integer",
+						"description": "Controls the order of the statusbar items, higher values position the statusbar item more to the left.",
+						"default": 100
 					}
 				}
 			}
