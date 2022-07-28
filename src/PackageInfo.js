@@ -172,6 +172,26 @@ class PackageInfo {
     return false
   }
 
+  getStatusBarAlignment() {
+    const alignment = vscode.workspace.getConfiguration('projectVersion').get('statusBarItemAlignment') || 'Right'
+
+    if (alignment === 'Left') {
+      return vscode.StatusBarAlignment.Left
+    } else {
+      return vscode.StatusBarAlignment.Right
+    }
+  }
+
+  getStatusBarPriority() {
+    const priority = vscode.workspace.getConfiguration('projectVersion').get('statusBarItemPriority')
+
+    if (typeof priority !== 'number') {
+      return 1000
+    } else {
+      return priority
+    }
+  }
+
   setupStatusBarItem() {
     this.statusBarItem.tooltip = "Open project's package.json."
     this.statusBarItem.text = '$(sync~spin)'
@@ -180,7 +200,7 @@ class PackageInfo {
   }
 
   async init() {
-    this.statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, Number.MAX_SAFE_INTEGER)
+    this.statusBarItem = vscode.window.createStatusBarItem(this.getStatusBarAlignment(), this.getStatusBarPriority())
 
     this.registerWorkspaceHandlers()
     this.registerConfigurationHandlers()
