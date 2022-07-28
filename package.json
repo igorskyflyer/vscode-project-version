@@ -102,7 +102,7 @@
 						"enumDescriptions": [
 							"Show an icon and the version number.",
 							"Show only the version number.",
-							"Use a custom format, change."
+							"Use a custom format."
 						]
 					},
 					"projectVersion.customFormat": {
