@@ -125,7 +125,7 @@
 					"projectVersion.statusBarItemPriority": {
 						"type": "integer",
 						"description": "Controls the order of the statusbar items, higher values position the statusbar item more to the left.",
-						"default": 100
+						"default": 1000
 					}
 				}
 			}
