@@ -108,6 +108,17 @@
 					"projectVersion.customFormat": {
 						"type": "string",
 						"markdownDescription": "Use a custom format of the StatusBar Item.\n\n\n\nAvailable variables are:\n\n- ${name} - project's name,\n\n- ${version} - project's version.\n\n\n\nExample: **${name} - v.${version}**.\n\n\n\nAll [Codicons](https://code.visualstudio.com/api/references/icons-in-labels) and emojis are available as well.\n\nUnknown variables will be stripped out."
+					},
+					"projectVersion.statusAlignment": {
+						"type": "string",
+						"enum": [
+							"Left",
+							"Right"
+						],
+						"enumDescriptions": [
+							"Show the statusbar item on the left",
+							"Show the statusbar item on the right"
+						]
 					}
 				}
 			}
