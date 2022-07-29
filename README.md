@@ -18,4 +18,4 @@ Well, this extension creates an auto-updated and customizable StatusBar item tha
 
 <br>
 
-There are 2 predefined output formats for you to use and an additional &ndash; a custom one &ndash; which gives you endless possibilities for customization.
+There are 2 predefined output formats for you to use and an additional &ndash; a custom one &ndash; which gives you endless possibilities for customization, including alignment and order of the Statusbar item since `v1.1.0`.
