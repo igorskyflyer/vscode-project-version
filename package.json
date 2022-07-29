@@ -14,7 +14,7 @@
 		"dist"
 	],
 	"scripts": {
-		"base": "esbuild src/extension.js --bundle --outfile=dist/project-version.js --platform=node --external:vscode --target=node14",
+		"base": "esbuild src/extension.js --bundle --outfile=dist/project-version.js --platform=node --external:vscode --target=node16",
 		"vscode:prepublish": "npm run make",
 		"make": "npm run -S base -- --minify",
 		"dev": "npm run -S base -- --sourcemap --watch",
