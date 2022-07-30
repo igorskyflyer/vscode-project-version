@@ -10,3 +10,6 @@ vsc-extension-quickstart.md
 src/**
 assets/project-version-screenshot.png
 beta/**
+ToDo.txt
+*.vsix
+*.zip
