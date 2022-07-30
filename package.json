@@ -3,7 +3,7 @@
 	"displayName": "Project Version",
 	"publisher": "igordvlpr",
 	"description": "📊 Provides a visual representation of you current npm project's version. 💪",
-	"version": "1.2.0",
+	"version": "1.2.1",
 	"engines": {
 		"vscode": "^1.69.0"
 	},
