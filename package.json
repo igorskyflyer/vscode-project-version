@@ -111,7 +111,7 @@
 					},
 					"projectVersion.statusBarItemAlignment": {
 						"type": "string",
-						"markdownDescription": "Controls the alignment of the statusbar item.<br>For statusbar item order, look at `statusBarItemPriority`.",
+						"markdownDescription": "Controls the alignment of the statusbar item.<br>For statusbar item order, look at `#projectVersion.statusBarItemPriority#`.",
 						"enum": [
 							"Right",
 							"Left"
