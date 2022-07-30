@@ -124,7 +124,7 @@
 					},
 					"projectVersion.statusBarItemPriority": {
 						"type": "integer",
-						"description": "Controls the order of the statusbar items, higher values position the statusbar item more to the left.\n\nFor statusbar item order, look at `#projectVersion.statusBarItemAlignment#`.",
+						"description": "Controls the order of the statusbar items, higher values position the statusbar item more to the left.\n\nFor statusbar item alignment, look at `#projectVersion.statusBarItemAlignment#`.",
 						"default": 1000
 					}
 				}
