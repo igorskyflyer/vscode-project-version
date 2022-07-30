@@ -68,7 +68,22 @@ class PackageInfo {
 
   registerConfigurationHandlers() {
     this.context.subscriptions.push(
-      vscode.workspace.onDidChangeConfiguration(async () => {
+      vscode.workspace.onDidChangeConfiguration(async (e) => {
+        if (
+          e.affectsConfiguration('projectVersion.statusBarItemAlignment') ||
+          e.affectsConfiguration('projectVersion.statusBarItemPriority')
+        ) {
+          if (this.statusBarItem) {
+            this.statusBarItem.hide()
+            this.statusBarItem.dispose()
+          }
+
+          this.statusBarItem = vscode.window.createStatusBarItem(this.getStatusBarAlignment(), this.getStatusBarPriority())
+          this.statusBarItem.show()
+
+          this.context.subscriptions.push(this.statusBarItem)
+        }
+
         this.setPackageUri()
         await this.updateStatusBarItem(true, true)
       })
