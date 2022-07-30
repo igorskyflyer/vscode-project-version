@@ -107,11 +107,11 @@
 					},
 					"projectVersion.customFormat": {
 						"type": "string",
-						"markdownDescription": "Use a custom format of the StatusBar Item.\n\n\n\nAvailable variables are:\n\n- ${name} - project's name,\n\n- ${version} - project's version.\n\n\n\nExample: **${name} - v.${version}**.\n\n\n\nAll [Codicons](https://code.visualstudio.com/api/references/icons-in-labels) and emojis are available as well.\n\nUnknown variables will be stripped out."
+						"markdownDescription": "Use a custom format of the StatusBar Item.\n\nAvailable variables are:\n\n- ${name} - project's name,\n\n- ${version} - project's version.\n\nExample: **${name} - v.${version}**.\n\nAll [Codicons](https://code.visualstudio.com/api/references/icons-in-labels) and emojis are available as well.\n\nUnknown variables will be stripped out."
 					},
 					"projectVersion.statusBarItemAlignment": {
 						"type": "string",
-						"markdownDescription": "Controls the alignment of the StatusBar item.\n\nFor StatusBar item order, look at `#projectVersion.statusBarItemPriority#`.",
+						"markdownDescription": "Controls the alignment of the StatusBar item.\n\nFor StatusBar item order, see `#projectVersion.statusBarItemPriority#`.",
 						"enum": [
 							"Right",
 							"Left"
@@ -124,7 +124,7 @@
 					},
 					"projectVersion.statusBarItemPriority": {
 						"type": "integer",
-						"markdownDescription": "Controls the order of the StatusBar items, higher values position the StatusBar item more to the left.\n\nFor StatusBar item alignment, look at `#projectVersion.statusBarItemAlignment#`.",
+						"markdownDescription": "Controls the order of the StatusBar items, higher values position the StatusBar item more to the left.\n\nFor StatusBar item alignment, see `#projectVersion.statusBarItemAlignment#`.",
 						"default": 1000
 					}
 				}
