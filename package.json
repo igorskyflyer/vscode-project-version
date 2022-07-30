@@ -111,20 +111,20 @@
 					},
 					"projectVersion.statusBarItemAlignment": {
 						"type": "string",
-						"markdownDescription": "Controls the alignment of the statusbar item.\n\nFor statusbar item order, look at `#projectVersion.statusBarItemPriority#`.",
+						"markdownDescription": "Controls the alignment of the StatusBar item.\n\nFor StatusBar item order, look at `#projectVersion.statusBarItemPriority#`.",
 						"enum": [
 							"Right",
 							"Left"
 						],
 						"enumDescriptions": [
-							"Show the statusbar item on the left",
-							"Show the statusbar item on the right"
+							"Show the StatusBar item on the left",
+							"Show the StatusBar item on the right"
 						],
 						"default": "Right"
 					},
 					"projectVersion.statusBarItemPriority": {
 						"type": "integer",
-						"description": "Controls the order of the statusbar items, higher values position the statusbar item more to the left.\n\nFor statusbar item alignment, look at `#projectVersion.statusBarItemAlignment#`.",
+						"description": "Controls the order of the StatusBar items, higher values position the StatusBar item more to the left.\n\nFor StatusBar item alignment, look at `#projectVersion.statusBarItemAlignment#`.",
 						"default": 1000
 					}
 				}
