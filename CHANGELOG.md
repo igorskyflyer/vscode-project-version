@@ -2,6 +2,12 @@
 
 <br>
 
+## 1.2.1
+
+- minor UX changes
+
+<br>
+
 ## 1.2.0
 
 - added hot-reload when changing Settings
