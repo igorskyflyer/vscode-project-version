@@ -5,7 +5,7 @@
 	"description": "📊 Provides a visual representation of you current npm project's version. 💪",
 	"version": "1.2.1",
 	"engines": {
-		"vscode": "^1.69.0"
+		"vscode": "^1.70.0"
 	},
 	"categories": [
 		"Other"
@@ -135,7 +135,7 @@
 		"@igor.dvlpr/keppo": "^1.0.0"
 	},
 	"devDependencies": {
-		"@types/vscode": "^1.69.0",
+		"@types/vscode": "^1.70.0",
 		"@types/node": "16.x",
 		"esbuild": "^0.14.51"
 	},
