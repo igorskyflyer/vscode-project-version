@@ -38,6 +38,9 @@
 		"onCommand:projectVersion.refresh",
 		"onCommand:projectVersion.openPackage",
 		"onCommand:projectVersion.config",
+		"onCommand:projectVersion.increaseMajor",
+		"onCommand:projectVersion.increaseMinor",
+		"onCommand:projectVersion.increasePatch",
 		"onStartupFinished"
 	],
 	"main": "./dist/project-version.js",
@@ -99,17 +102,20 @@
 			},
 			{
 				"command": "projectVersion.increaseMajor",
-				"title": "Increase major version",
+				"title": "Increase major version by 1",
+				"enablement": "workspaceContains:**/package.json",
 				"category": "Project Version"
 			},
 			{
 				"command": "projectVersion.increaseMinor",
-				"title": "Increase minor version",
+				"title": "Increase minor version by 1",
+				"enablement": "workspaceContains:**/package.json",
 				"category": "Project Version"
 			},
 			{
 				"command": "projectVersion.increasePatch",
-				"title": "Increase patch version",
+				"title": "Increase patch version by 1",
+				"enablement": "workspaceContains:**/package.json",
 				"category": "Project Version"
 			}
 		],
