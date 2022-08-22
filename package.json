@@ -64,6 +64,18 @@
 				{
 					"command": "projectVersion.config",
 					"group": "Project Version"
+				},
+				{
+					"command": "projectVersion.increaseMajor",
+					"group": "Project Version"
+				},
+				{
+					"command": "projectVersion.increaseMinor",
+					"group": "Project Version"
+				},
+				{
+					"command": "projectVersion.increasePatch",
+					"group": "Project Version"
 				}
 			]
 		},
@@ -83,6 +95,21 @@
 			{
 				"command": "projectVersion.config",
 				"title": "Config",
+				"category": "Project Version"
+			},
+			{
+				"command": "projectVersion.increaseMajor",
+				"title": "Increase major version",
+				"category": "Project Version"
+			},
+			{
+				"command": "projectVersion.increaseMinor",
+				"title": "Increase minor version",
+				"category": "Project Version"
+			},
+			{
+				"command": "projectVersion.increasePatch",
+				"title": "Increase patch version",
 				"category": "Project Version"
 			}
 		],
