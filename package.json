@@ -163,7 +163,7 @@
 					"projectVersion.autoSaveOnVersionChange": {
 						"type": "boolean",
 						"markdownDescription": "Controls whether to save the project's `package.json` automatically when changing the version using this extension.\n\nTip: open the *Command Palette* and search for **Project Version increase**.",
-						"default": true
+						"default": false
 					}
 				}
 			}
