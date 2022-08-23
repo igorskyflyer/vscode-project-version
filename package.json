@@ -103,19 +103,19 @@
 			{
 				"command": "projectVersion.increaseMajor",
 				"title": "Increase major version by 1",
-				"enablement": "workspaceContains:**/package.json",
+				"enablement": "workspaceFolderCount >= 1",
 				"category": "Project Version"
 			},
 			{
 				"command": "projectVersion.increaseMinor",
 				"title": "Increase minor version by 1",
-				"enablement": "workspaceContains:**/package.json",
+				"enablement": "workspaceFolderCount >= 1",
 				"category": "Project Version"
 			},
 			{
 				"command": "projectVersion.increasePatch",
 				"title": "Increase patch version by 1",
-				"enablement": "workspaceContains:**/package.json",
+				"enablement": "workspaceFolderCount >= 1",
 				"category": "Project Version"
 			}
 		],
