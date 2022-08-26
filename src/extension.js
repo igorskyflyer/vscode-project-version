@@ -18,7 +18,7 @@ async function activate(context) {
   context.subscriptions.push(
     ...[
       vscode.commands.registerCommand('projectVersion.openPackage', async () => {
-        await extension?.openPackageFile()
+        await extension.openPackageFile()
       }),
 
       vscode.commands.registerCommand('projectVersion.refresh', async () => {
