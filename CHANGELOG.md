@@ -8,7 +8,7 @@
   - [@igor.dvlpr/keppo](https://www.npmjs.com/package/@igor.dvlpr/keppo) - a library that allows you to parse, manage, compare and output SemVer-compatible version numbers,
 - upgraded VS Code to v1.70,
 - upgraded esbuild,
-- added the auto save version change setting,
+- added the auto save on version change setting,
 - upgraded dependencies,
 - minor refactor.
 
