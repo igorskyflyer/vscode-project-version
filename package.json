@@ -3,9 +3,9 @@
 	"displayName": "Project Version",
 	"publisher": "igordvlpr",
 	"description": "📊 Provides a visual representation of you current npm project's version. 💪",
-	"version": "1.2.1",
+	"version": "1.3.0",
 	"engines": {
-		"vscode": "^1.69.0"
+		"vscode": "^1.70.0"
 	},
 	"categories": [
 		"Other"
@@ -38,6 +38,9 @@
 		"onCommand:projectVersion.refresh",
 		"onCommand:projectVersion.openPackage",
 		"onCommand:projectVersion.config",
+		"onCommand:projectVersion.increaseMajor",
+		"onCommand:projectVersion.increaseMinor",
+		"onCommand:projectVersion.increasePatch",
 		"onStartupFinished"
 	],
 	"main": "./dist/project-version.js",
@@ -64,6 +67,18 @@
 				{
 					"command": "projectVersion.config",
 					"group": "Project Version"
+				},
+				{
+					"command": "projectVersion.increaseMajor",
+					"group": "Project Version"
+				},
+				{
+					"command": "projectVersion.increaseMinor",
+					"group": "Project Version"
+				},
+				{
+					"command": "projectVersion.increasePatch",
+					"group": "Project Version"
 				}
 			]
 		},
@@ -83,6 +98,24 @@
 			{
 				"command": "projectVersion.config",
 				"title": "Config",
+				"category": "Project Version"
+			},
+			{
+				"command": "projectVersion.increaseMajor",
+				"title": "Increase major version by 1",
+				"enablement": "workspaceFolderCount >= 1",
+				"category": "Project Version"
+			},
+			{
+				"command": "projectVersion.increaseMinor",
+				"title": "Increase minor version by 1",
+				"enablement": "workspaceFolderCount >= 1",
+				"category": "Project Version"
+			},
+			{
+				"command": "projectVersion.increasePatch",
+				"title": "Increase patch version by 1",
+				"enablement": "workspaceFolderCount >= 1",
 				"category": "Project Version"
 			}
 		],
@@ -126,15 +159,23 @@
 						"type": "integer",
 						"markdownDescription": "Controls the order of the StatusBar items, higher values position the StatusBar item more to the left.\n\nFor StatusBar item alignment, see `#projectVersion.statusBarItemAlignment#`.",
 						"default": 1000
+					},
+					"projectVersion.autoSaveOnVersionChange": {
+						"type": "boolean",
+						"markdownDescription": "Controls whether to save the project's `package.json` automatically when changing the version using this extension.\n\nTip: open the *Command Palette* and search for **Project Version increase**.",
+						"default": false
 					}
 				}
 			}
 		]
 	},
+	"dependencies": {
+		"@igor.dvlpr/keppo": "^1.0.0"
+	},
 	"devDependencies": {
-		"@types/vscode": "^1.69.0",
+		"@types/vscode": "^1.70.0",
 		"@types/node": "16.x",
-		"esbuild": "^0.14.51"
+		"esbuild": "^0.15.5"
 	},
 	"license": "SEE LICENSE IN LICENSE.txt",
 	"bugs": {

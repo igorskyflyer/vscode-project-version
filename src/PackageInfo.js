@@ -1,4 +1,5 @@
-const { readFile, access } = require('fs/promises')
+const { Keppo } = require('@igor.dvlpr/keppo')
+const { readFile, access, writeFile } = require('fs/promises')
 const { join } = require('path')
 const vscode = require('vscode')
 
@@ -142,6 +143,11 @@ class PackageInfo {
     }
   }
 
+  /** @returns {boolean} */
+  getAutoSaveOnVersionChange() {
+    return vscode.workspace.getConfiguration('projectVersion').get('autoSaveOnVersionChange') || false
+  }
+
   /** @returns {Promise<boolean>} */
   async readPackageInfo() {
     try {
@@ -283,6 +289,66 @@ class PackageInfo {
       }
     } else {
       vscode.window.showInformationMessage('This project has no package.json file.')
+    }
+  }
+
+  /**
+   * @param {string} component
+   */
+  async increaseVersion(component) {
+    try {
+      const document = await vscode.workspace.openTextDocument(this.packagePath)
+
+      if (document.isDirty) {
+        vscode.window.showErrorMessage(
+          'The file package.json is dirty, either save it, undo the changes or consider using the setting Auto save of the extension.'
+        )
+        return
+      }
+
+      if (!this.projectInfo.version) {
+        vscode.window.showErrorMessage('The package.json file does not contain the version property.')
+        return
+      }
+
+      const version = new Keppo(this.projectInfo.version)
+      version.isStrict(true)
+
+      if (component === 'major') {
+        version.increaseMajor(1)
+      } else if (component === 'minor') {
+        version.increaseMinor(1)
+      } else {
+        version.increasePatch(1)
+      }
+
+      const packageFile = document.getText()
+
+      const replacedFile = packageFile.replace(`"version": "${this.projectInfo.version}"`, `"version": "${version.toString()}"`)
+
+      if (packageFile === replacedFile) {
+        vscode.window.showErrorMessage(
+          "Couldn't update the version, either there is no version property or the package.json is not formatted correctly."
+        )
+        return
+      }
+
+      if (this.getAutoSaveOnVersionChange()) {
+        await writeFile(this.packagePath, replacedFile)
+      } else {
+        const editor = await vscode.window.showTextDocument(document)
+
+        editor.edit((editBuilder) => {
+          editBuilder.replace(
+            new vscode.Range(document.lineAt(0).range.start, document.lineAt(document.lineCount - 1).range.end),
+            replacedFile
+          )
+        })
+      }
+    } catch {
+      vscode.window.showErrorMessage(
+        "An error has occurred while updating the project's version. Check if your project's package.json file is valid."
+      )
     }
   }
 }

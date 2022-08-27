@@ -18,19 +18,43 @@ async function activate(context) {
   context.subscriptions.push(
     ...[
       vscode.commands.registerCommand('projectVersion.openPackage', async () => {
-        await extension?.openPackageFile()
+        await extension.openPackageFile()
       }),
+
       vscode.commands.registerCommand('projectVersion.refresh', async () => {
-        if (extension != null) {
-          if (await extension.packageFileExists()) {
-            await extension.updateStatusBarItem(true)
-          } else {
-            vscode.window.showInformationMessage('This project has no package.json file.')
-          }
+        if (await extension.packageFileExists()) {
+          await extension.updateStatusBarItem(true)
+        } else {
+          vscode.window.showInformationMessage('This project has no package.json file.')
         }
       }),
+
       vscode.commands.registerCommand('projectVersion.config', () => {
         vscode.commands.executeCommand('workbench.action.openSettings', '@ext:igordvlpr.project-version')
+      }),
+
+      vscode.commands.registerCommand('projectVersion.increaseMajor', async () => {
+        if (await extension.packageFileExists()) {
+          await extension.increaseVersion('major')
+        } else {
+          vscode.window.showInformationMessage('This project has no package.json file.')
+        }
+      }),
+
+      vscode.commands.registerCommand('projectVersion.increaseMinor', async () => {
+        if (await extension.packageFileExists()) {
+          await extension.increaseVersion('minor')
+        } else {
+          vscode.window.showInformationMessage('This project has no package.json file.')
+        }
+      }),
+
+      vscode.commands.registerCommand('projectVersion.increasePatch', async () => {
+        if (await extension.packageFileExists()) {
+          await extension.increaseVersion('patch')
+        } else {
+          vscode.window.showInformationMessage('This project has no package.json file.')
+        }
       }),
     ]
   )
