@@ -173,7 +173,7 @@
 		"@igor.dvlpr/keppo": "^1.0.0"
 	},
 	"devDependencies": {
-		"@types/vscode": "^1.70.0",
+		"@types/vscode": "^1.71.0",
 		"@types/node": "16.x",
 		"esbuild": "^0.15.7"
 	},
