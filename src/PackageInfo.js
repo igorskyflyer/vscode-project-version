@@ -294,8 +294,9 @@ class PackageInfo {
 
   /**
    * @param {string} component
+   * @param {number} [increaseBy=1]
    */
-  async increaseVersion(component) {
+  async increaseVersion(component, increaseBy = 1) {
     try {
       const document = await vscode.workspace.openTextDocument(this.packagePath)
 
@@ -315,11 +316,11 @@ class PackageInfo {
       version.isStrict(true)
 
       if (component === 'major') {
-        version.increaseMajor(1)
+        version.increaseMajor(increaseBy)
       } else if (component === 'minor') {
-        version.increaseMinor(1)
+        version.increaseMinor(increaseBy)
       } else {
-        version.increasePatch(1)
+        version.increasePatch(increaseBy)
       }
 
       const packageFile = document.getText()
