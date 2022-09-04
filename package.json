@@ -39,8 +39,11 @@
 		"onCommand:projectVersion.openPackage",
 		"onCommand:projectVersion.config",
 		"onCommand:projectVersion.increaseMajor",
+		"onCommand:projectVersion.increaseMajorBy",
 		"onCommand:projectVersion.increaseMinor",
+		"onCommand:projectVersion.increaseMinorBy",
 		"onCommand:projectVersion.increasePatch",
+		"onCommand:projectVersion.increasePatchBy",
 		"onStartupFinished"
 	],
 	"main": "./dist/project-version.js",
@@ -73,11 +76,23 @@
 					"group": "Project Version"
 				},
 				{
+					"command": "projectVersion.increaseMajorBy",
+					"group": "Project Version"
+				},
+				{
 					"command": "projectVersion.increaseMinor",
 					"group": "Project Version"
 				},
 				{
+					"command": "projectVersion.increaseMinorBy",
+					"group": "Project Version"
+				},
+				{
 					"command": "projectVersion.increasePatch",
+					"group": "Project Version"
+				},
+				{
+					"command": "projectVersion.increasePatchBy",
 					"group": "Project Version"
 				}
 			]
@@ -107,14 +122,32 @@
 				"category": "Project Version"
 			},
 			{
+				"command": "projectVersion.increaseMajorBy",
+				"title": "Increase major version by...",
+				"enablement": "workspaceFolderCount >= 1",
+				"category": "Project Version"
+			},
+			{
 				"command": "projectVersion.increaseMinor",
 				"title": "Increase minor version by 1",
 				"enablement": "workspaceFolderCount >= 1",
 				"category": "Project Version"
 			},
 			{
+				"command": "projectVersion.increaseMinorBy",
+				"title": "Increase minor version by...",
+				"enablement": "workspaceFolderCount >= 1",
+				"category": "Project Version"
+			},
+			{
 				"command": "projectVersion.increasePatch",
 				"title": "Increase patch version by 1",
+				"enablement": "workspaceFolderCount >= 1",
+				"category": "Project Version"
+			},
+			{
+				"command": "projectVersion.increasePatchBy",
+				"title": "Increase patch version by...",
 				"enablement": "workspaceFolderCount >= 1",
 				"category": "Project Version"
 			}
