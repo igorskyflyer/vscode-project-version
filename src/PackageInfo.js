@@ -6,7 +6,7 @@ const vscode = require('vscode')
 /**
  * @typedef {object} ProjectInfo
  * @property {string} name
- * @property {string} version
+ * @property {Keppo} version
  */
 
 /** @enum {string} */
@@ -40,7 +40,7 @@ class PackageInfo {
      */
     this.projectInfo = {
       name: '',
-      version: '',
+      version: new Keppo(0, 0, 0, true),
     }
     /** @type {vscode.StatusBarItem} */
     this.statusBarItem = null
@@ -129,17 +129,17 @@ class PackageInfo {
     let customFormat = this.getCustomFormat()
 
     if (format === DisplayMode.TextOnly) {
-      return `${this.projectInfo.name} ${this.projectInfo.version}`
+      return `${this.projectInfo.name} ${this.projectInfo.version.toString()}`
     } else if (customFormat && format === DisplayMode.Custom) {
       customFormat = customFormat.replace('${name}', this.projectInfo.name)
-      customFormat = customFormat.replace('${version}', this.projectInfo.version)
+      customFormat = customFormat.replace('${version}', this.projectInfo.version.toString())
 
       // handle non-existent variables
       customFormat = customFormat.replace(/\$\{.*?\}/gi, '')
 
       return customFormat
     } else {
-      return `$(info) ${this.projectInfo.name} ${this.projectInfo.version}`
+      return `$(info) ${this.projectInfo.name} ${this.projectInfo.version.toString()}`
     }
   }
 
@@ -171,9 +171,9 @@ class PackageInfo {
       }
 
       if (version) {
-        this.projectInfo.version = version
+        this.projectInfo.version.setVersion(version)
       } else {
-        this.projectInfo.version = ''
+        // this.projectInfo.version = ''
       }
 
       return true
@@ -183,10 +183,10 @@ class PackageInfo {
   }
 
   /**
-   * @param {ProjectInfo} info
+   * @param {{name: string, version: string}} info
    */
   packageHasChanged(info) {
-    if (info.name !== this.projectInfo.name || info.version !== this.projectInfo.version) {
+    if (info.name !== this.projectInfo.name || info.version !== this.projectInfo.version.toString()) {
       return true
     }
 
@@ -312,20 +312,37 @@ class PackageInfo {
         return
       }
 
-      const version = new Keppo(this.projectInfo.version)
-      version.isStrict(true)
+      const oldVersion = this.projectInfo.version.toString()
 
       if (component === 'major') {
-        version.increaseMajor(increaseBy)
+        if (this.projectInfo.version.canIncreaseMajor(increaseBy)) {
+          this.projectInfo.version.increaseMajor(increaseBy)
+        } else {
+          // shouldn't ever reach this
+          vscode.window.showErrorMessage('')
+        }
       } else if (component === 'minor') {
-        version.increaseMinor(increaseBy)
+        if (this.projectInfo.version.canIncreaseMinor(increaseBy)) {
+          this.projectInfo.version.increaseMinor(increaseBy)
+        } else {
+          // shouldn't ever reach this
+          vscode.window.showErrorMessage('')
+        }
       } else {
-        version.increasePatch(increaseBy)
+        if (this.projectInfo.version.canIncreasePatch(increaseBy)) {
+          this.projectInfo.version.increasePatch(increaseBy)
+        } else {
+          // shouldn't ever reach this
+          vscode.window.showErrorMessage('')
+        }
       }
 
       const packageFile = document.getText()
 
-      const replacedFile = packageFile.replace(`"version": "${this.projectInfo.version}"`, `"version": "${version.toString()}"`)
+      const replacedFile = packageFile.replace(
+        `"version": "${oldVersion}"`,
+        `"version": "${this.projectInfo.version.toString()}"`
+      )
 
       if (packageFile === replacedFile) {
         vscode.window.showErrorMessage(
