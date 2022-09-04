@@ -41,6 +41,18 @@ async function activate(context) {
         }
       }),
 
+      vscode.commands.registerCommand('projectVersion.increaseMajorBy', async () => {
+        if (await extension.packageFileExists()) {
+          const input = await extension.showIncreaseByInput('major')
+
+          if (input && input !== '') {
+            await extension.increaseVersion('major', +input)
+          }
+        } else {
+          vscode.window.showInformationMessage('This project has no package.json file.')
+        }
+      }),
+
       vscode.commands.registerCommand('projectVersion.increaseMinor', async () => {
         if (await extension.packageFileExists()) {
           await extension.increaseVersion('minor')
@@ -49,9 +61,33 @@ async function activate(context) {
         }
       }),
 
+      vscode.commands.registerCommand('projectVersion.increaseMinorBy', async () => {
+        if (await extension.packageFileExists()) {
+          const input = await extension.showIncreaseByInput('minor')
+
+          if (input && input !== '') {
+            await extension.increaseVersion('minor', +input)
+          }
+        } else {
+          vscode.window.showInformationMessage('This project has no package.json file.')
+        }
+      }),
+
       vscode.commands.registerCommand('projectVersion.increasePatch', async () => {
         if (await extension.packageFileExists()) {
           await extension.increaseVersion('patch')
+        } else {
+          vscode.window.showInformationMessage('This project has no package.json file.')
+        }
+      }),
+
+      vscode.commands.registerCommand('projectVersion.increasePatchBy', async () => {
+        if (await extension.packageFileExists()) {
+          const input = await extension.showIncreaseByInput('patch')
+
+          if (input && input !== '') {
+            await extension.increaseVersion('patch', +input)
+          }
         } else {
           vscode.window.showInformationMessage('This project has no package.json file.')
         }

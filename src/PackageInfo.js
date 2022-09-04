@@ -6,7 +6,7 @@ const vscode = require('vscode')
 /**
  * @typedef {object} ProjectInfo
  * @property {string} name
- * @property {string} version
+ * @property {Keppo} version
  */
 
 /** @enum {string} */
@@ -40,7 +40,7 @@ class PackageInfo {
      */
     this.projectInfo = {
       name: '',
-      version: '',
+      version: new Keppo(0, 0, 0, true),
     }
     /** @type {vscode.StatusBarItem} */
     this.statusBarItem = null
@@ -129,17 +129,17 @@ class PackageInfo {
     let customFormat = this.getCustomFormat()
 
     if (format === DisplayMode.TextOnly) {
-      return `${this.projectInfo.name} ${this.projectInfo.version}`
+      return `${this.projectInfo.name} ${this.projectInfo.version.toString()}`
     } else if (customFormat && format === DisplayMode.Custom) {
       customFormat = customFormat.replace('${name}', this.projectInfo.name)
-      customFormat = customFormat.replace('${version}', this.projectInfo.version)
+      customFormat = customFormat.replace('${version}', this.projectInfo.version.toString())
 
       // handle non-existent variables
       customFormat = customFormat.replace(/\$\{.*?\}/gi, '')
 
       return customFormat
     } else {
-      return `$(info) ${this.projectInfo.name} ${this.projectInfo.version}`
+      return `$(info) ${this.projectInfo.name} ${this.projectInfo.version.toString()}`
     }
   }
 
@@ -170,10 +170,10 @@ class PackageInfo {
         this.projectInfo.name = ''
       }
 
-      if (version) {
-        this.projectInfo.version = version
+      if (version && Keppo.isValid(version)) {
+        this.projectInfo.version.setVersion(version)
       } else {
-        this.projectInfo.version = ''
+        return false
       }
 
       return true
@@ -183,10 +183,10 @@ class PackageInfo {
   }
 
   /**
-   * @param {ProjectInfo} info
+   * @param {{name: string, version: string}} info
    */
   packageHasChanged(info) {
-    if (info.name !== this.projectInfo.name || info.version !== this.projectInfo.version) {
+    if (info.name !== this.projectInfo.name || info.version !== this.projectInfo.version.toString()) {
       return true
     }
 
@@ -294,8 +294,9 @@ class PackageInfo {
 
   /**
    * @param {string} component
+   * @param {number} [increaseBy=1]
    */
-  async increaseVersion(component) {
+  async increaseVersion(component, increaseBy = 1) {
     try {
       const document = await vscode.workspace.openTextDocument(this.packagePath)
 
@@ -311,20 +312,37 @@ class PackageInfo {
         return
       }
 
-      const version = new Keppo(this.projectInfo.version)
-      version.isStrict(true)
+      const oldVersion = this.projectInfo.version.toString()
 
       if (component === 'major') {
-        version.increaseMajor(1)
+        if (this.projectInfo.version.canIncreaseMajor(increaseBy)) {
+          this.projectInfo.version.increaseMajor(increaseBy)
+        } else {
+          // shouldn't ever reach this
+          vscode.window.showErrorMessage('Value not within the allowed range.')
+        }
       } else if (component === 'minor') {
-        version.increaseMinor(1)
+        if (this.projectInfo.version.canIncreaseMinor(increaseBy)) {
+          this.projectInfo.version.increaseMinor(increaseBy)
+        } else {
+          // shouldn't ever reach this
+          vscode.window.showErrorMessage('Value not within the allowed range.')
+        }
       } else {
-        version.increasePatch(1)
+        if (this.projectInfo.version.canIncreasePatch(increaseBy)) {
+          this.projectInfo.version.increasePatch(increaseBy)
+        } else {
+          // shouldn't ever reach this
+          vscode.window.showErrorMessage('Value not within the allowed range.')
+        }
       }
 
       const packageFile = document.getText()
 
-      const replacedFile = packageFile.replace(`"version": "${this.projectInfo.version}"`, `"version": "${version.toString()}"`)
+      const replacedFile = packageFile.replace(
+        `"version": "${oldVersion}"`,
+        `"version": "${this.projectInfo.version.toString()}"`
+      )
 
       if (packageFile === replacedFile) {
         vscode.window.showErrorMessage(
@@ -350,6 +368,52 @@ class PackageInfo {
         "An error has occurred while updating the project's version. Check if your project's package.json file is valid."
       )
     }
+  }
+
+  /**
+   *
+   * @param {string} component
+   * @returns {Promise<string>}
+   */
+  async showIncreaseByInput(component) {
+    let maxIncrease = 0
+
+    if (component === 'major') {
+      maxIncrease = this.projectInfo.version.maxIncreaseMajor()
+    } else if (component === 'minor') {
+      maxIncrease = this.projectInfo.version.maxIncreaseMinor()
+    } else {
+      maxIncrease = this.projectInfo.version.maxIncreasePatch()
+    }
+
+    return vscode.window.showInputBox({
+      placeHolder: 'Increase by',
+      title: `Increase ${component} version number`,
+      prompt: `Value to increase by (min: 1, max: ${maxIncrease})`,
+      validateInput: (value) => {
+        const increaseBy = +value
+
+        if (component === 'major') {
+          if (increaseBy > 0 && this.projectInfo.version.canIncreaseMajor(increaseBy)) {
+            return null
+          } else {
+            return 'Value not within the allowed range.'
+          }
+        } else if (component === 'minor') {
+          if (increaseBy > 0 && this.projectInfo.version.canIncreaseMinor(increaseBy)) {
+            return null
+          } else {
+            return 'Value not within the allowed range.'
+          }
+        } else {
+          if (increaseBy > 0 && this.projectInfo.version.canIncreasePatch(increaseBy)) {
+            return null
+          } else {
+            return 'Value not within the allowed range.'
+          }
+        }
+      },
+    })
   }
 }
 

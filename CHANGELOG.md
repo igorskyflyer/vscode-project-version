@@ -2,6 +2,16 @@
 
 <br>
 
+## 1.4.0
+
+- added the ability to programmatically bump your `package.json` version, now by an arbitrary number, open `Command Palette` and search for `"Project version increase by..."`, made possible by the upgraded [@igor.dvlpr/keppo](https://www.npmjs.com/package/@igor.dvlpr/keppo) library,
+- upgraded internal dependencies:
+  - upgraded vscode to v1.71.0,
+  - upgraded esbuild to v0.15.7.
+- internal refactor for better UX.
+
+<br>
+
 ## 1.3.0
 
 - added the ability to programmatically bump your `package.json` version, open `Command Palette` and search for `"Project version increase"`, made possible by:
