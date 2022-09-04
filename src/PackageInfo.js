@@ -170,10 +170,10 @@ class PackageInfo {
         this.projectInfo.name = ''
       }
 
-      if (version) {
+      if (version && Keppo.isValid(version)) {
         this.projectInfo.version.setVersion(version)
       } else {
-        // this.projectInfo.version = ''
+        return false
       }
 
       return true
@@ -319,21 +319,21 @@ class PackageInfo {
           this.projectInfo.version.increaseMajor(increaseBy)
         } else {
           // shouldn't ever reach this
-          vscode.window.showErrorMessage('')
+          vscode.window.showErrorMessage('Value not within the allowed range.')
         }
       } else if (component === 'minor') {
         if (this.projectInfo.version.canIncreaseMinor(increaseBy)) {
           this.projectInfo.version.increaseMinor(increaseBy)
         } else {
           // shouldn't ever reach this
-          vscode.window.showErrorMessage('')
+          vscode.window.showErrorMessage('Value not within the allowed range.')
         }
       } else {
         if (this.projectInfo.version.canIncreasePatch(increaseBy)) {
           this.projectInfo.version.increasePatch(increaseBy)
         } else {
           // shouldn't ever reach this
-          vscode.window.showErrorMessage('')
+          vscode.window.showErrorMessage('Value not within the allowed range.')
         }
       }
 
@@ -368,6 +368,52 @@ class PackageInfo {
         "An error has occurred while updating the project's version. Check if your project's package.json file is valid."
       )
     }
+  }
+
+  /**
+   *
+   * @param {string} component
+   * @returns {Promise<string>}
+   */
+  async showIncreaseByInput(component) {
+    let maxIncrease = 0
+
+    if (component === 'major') {
+      maxIncrease = this.projectInfo.version.maxIncreaseMajor()
+    } else if (component === 'minor') {
+      maxIncrease = this.projectInfo.version.maxIncreaseMinor()
+    } else {
+      maxIncrease = this.projectInfo.version.maxIncreasePatch()
+    }
+
+    return vscode.window.showInputBox({
+      placeHolder: 'Increase by',
+      title: `Increase ${component} version number`,
+      prompt: `Value to increase by (min: 1, max: ${maxIncrease})`,
+      validateInput: (value) => {
+        const increaseBy = +value
+
+        if (component === 'major') {
+          if (increaseBy > 0 && this.projectInfo.version.canIncreaseMajor(increaseBy)) {
+            return null
+          } else {
+            return 'Value not within the allowed range.'
+          }
+        } else if (component === 'minor') {
+          if (increaseBy > 0 && this.projectInfo.version.canIncreaseMinor(increaseBy)) {
+            return null
+          } else {
+            return 'Value not within the allowed range.'
+          }
+        } else {
+          if (increaseBy > 0 && this.projectInfo.version.canIncreasePatch(increaseBy)) {
+            return null
+          } else {
+            return 'Value not within the allowed range.'
+          }
+        }
+      },
+    })
   }
 }
 
