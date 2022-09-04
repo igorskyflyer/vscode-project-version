@@ -170,7 +170,7 @@
 		]
 	},
 	"dependencies": {
-		"@igor.dvlpr/keppo": "^1.0.0"
+		"@igor.dvlpr/keppo": "^1.1.0"
 	},
 	"devDependencies": {
 		"@types/vscode": "^1.71.0",
