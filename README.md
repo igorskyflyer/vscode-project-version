@@ -8,6 +8,8 @@ How many times have you found yourself in the situation where you need to push y
 
 Well, this extension creates an auto-updated and customizable StatusBar item that displays the current version of your project. 💃
 
+Since `v1.3.0` it is possible to programatically bump your project's version by one iteration and since `v1.4.0` you can use any arbitrary number.
+
 <br>
 
 ## 🔫 In Action
