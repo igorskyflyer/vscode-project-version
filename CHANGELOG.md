@@ -4,8 +4,9 @@
 
 ## 1.4.1
 
-- regular maintenance release,
+- removed redundant `node_modules` package and decreased the extension size by ~37% 🚀,
 - updated extension's README with easier functionality intro.
+- regular maintenance release,
 
 <br>
 
