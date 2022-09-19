@@ -15,7 +15,7 @@ Since `v1.3.0` it is possible to programatically bump your project's version by 
 ## 🔫 In Action
 
 <p align="center">
-	<img src="https://raw.githubusercontent.com/igorskyflyer/vscode-project-version/main/assets/project-version-screenshot.png" alt="Project Version - main screen">
+	<img src="https://raw.githubusercontent.com/igorskyflyer/vscode-project-version/main/assets/screenshots/project-version-screenshot.png" alt="Project Version - main screen">
 </p>
 
 <br>
@@ -23,7 +23,7 @@ Since `v1.3.0` it is possible to programatically bump your project's version by 
 There are 2 predefined output formats for you to use and an additional &ndash; a custom one &ndash; which gives you endless possibilities for customization, including alignment and order of the Statusbar item since `v1.1.0`.
 
 <p align="center">
-	<img src="https://raw.githubusercontent.com/igorskyflyer/vscode-project-version/main/assets/project-version-bump.png" alt="Project Version - bump version">
+	<img src="https://raw.githubusercontent.com/igorskyflyer/vscode-project-version/main/assets/screenshots/project-version-bump.png" alt="Project Version - bump version">
 </p>
 
 You can also bump your project's version easily, either by 1 or an arbitrary value.
