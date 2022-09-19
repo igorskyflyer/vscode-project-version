@@ -8,8 +8,9 @@ vsc-extension-quickstart.md
 **/*.map
 **/.eslintrc.json
 src/**
-assets/project-version-screenshot.png
+assets/screenshots/**
 beta/**
 ToDo.txt
 *.vsix
 *.zip
+node_modules/**
