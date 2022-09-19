@@ -11,7 +11,8 @@
 		"Other"
 	],
 	"files": [
-		"dist"
+		"dist",
+		"assets/project-version.png"
 	],
 	"scripts": {
 		"base": "esbuild src/extension.js --bundle --outfile=dist/project-version.js --platform=node --external:vscode --target=node16",
