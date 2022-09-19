@@ -2,6 +2,13 @@
 
 <br>
 
+## 1.4.1
+
+- regular maintenance release,
+- updated extension's README with easier functionality intro.
+
+<br>
+
 ## 1.4.0
 
 - added the ability to programmatically bump your `package.json` version, now by an arbitrary number, open `Command Palette` and search for `"Project version increase by..."`, made possible by the upgraded [@igor.dvlpr/keppo](https://www.npmjs.com/package/@igor.dvlpr/keppo) library,
