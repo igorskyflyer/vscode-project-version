@@ -53,7 +53,7 @@ class PackageInfo {
 
   setPackageUri() {
     if (this.packagePath != null) {
-      this.project.hasPackage = false
+      this.project.hasPackage = true
       return
     }
 
@@ -377,6 +377,10 @@ class PackageInfo {
       title: `Increase ${component} version number`,
       prompt: `Value to increase by (min: 1, max: ${maxIncrease})`,
       validateInput: (value) => {
+        if (value === '') {
+          return null
+        }
+
         if (value.length > maxCount) {
           return Strings.ERROR_VERSION_RANGE_INVALID
         }
