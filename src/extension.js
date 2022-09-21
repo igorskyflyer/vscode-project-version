@@ -22,7 +22,7 @@ async function activate(context) {
       }),
 
       vscode.commands.registerCommand('projectVersion.refresh', async () => {
-        if (extension.hasPackage) {
+        if (extension.hasPackage()) {
           await extension.updateStatusBarItem(true)
         } else {
           extension.noPackageMessage()
@@ -34,7 +34,7 @@ async function activate(context) {
       }),
 
       vscode.commands.registerCommand('projectVersion.increaseMajor', async () => {
-        if (extension.hasPackage) {
+        if (extension.hasPackage()) {
           await extension.increaseVersion('major')
         } else {
           extension.noPackageMessage()
@@ -42,7 +42,7 @@ async function activate(context) {
       }),
 
       vscode.commands.registerCommand('projectVersion.increaseMajorBy', async () => {
-        if (extension.hasPackage) {
+        if (extension.hasPackage()) {
           const input = await extension.showIncreaseByInput('major')
 
           if (input && input !== '') {
@@ -54,7 +54,7 @@ async function activate(context) {
       }),
 
       vscode.commands.registerCommand('projectVersion.increaseMinor', async () => {
-        if (extension.hasPackage) {
+        if (extension.hasPackage()) {
           await extension.increaseVersion('minor')
         } else {
           extension.noPackageMessage()
@@ -62,7 +62,7 @@ async function activate(context) {
       }),
 
       vscode.commands.registerCommand('projectVersion.increaseMinorBy', async () => {
-        if (extension.hasPackage) {
+        if (extension.hasPackage()) {
           const input = await extension.showIncreaseByInput('minor')
 
           if (input && input !== '') {
@@ -74,7 +74,7 @@ async function activate(context) {
       }),
 
       vscode.commands.registerCommand('projectVersion.increasePatch', async () => {
-        if (extension.hasPackage) {
+        if (extension.hasPackage()) {
           await extension.increaseVersion('patch')
         } else {
           extension.noPackageMessage()
@@ -82,7 +82,7 @@ async function activate(context) {
       }),
 
       vscode.commands.registerCommand('projectVersion.increasePatchBy', async () => {
-        if (extension.hasPackage) {
+        if (extension.hasPackage()) {
           const input = await extension.showIncreaseByInput('patch')
 
           if (input && input !== '') {
