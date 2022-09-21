@@ -1,12 +1,14 @@
 const { Keppo } = require('@igor.dvlpr/keppo')
-const { readFile, access, writeFile } = require('fs/promises')
+const { readFile, writeFile } = require('fs/promises')
 const { join } = require('path')
 const vscode = require('vscode')
+const Strings = require('./strings.js')
 
 /**
- * @typedef {object} ProjectInfo
+ * @typedef {object} Project
  * @property {string} name
  * @property {Keppo} version
+ * @property {boolean} hasPackage
  */
 
 /** @enum {string} */
@@ -36,11 +38,12 @@ class PackageInfo {
     this.packagePath = null
     /**
      * @private
-     * @type {ProjectInfo}
+     * @type {Project}
      */
-    this.projectInfo = {
+    this.project = {
       name: '',
       version: new Keppo(0, 0, 0, true),
+      hasPackage: false,
     }
     /** @type {vscode.StatusBarItem} */
     this.statusBarItem = null
@@ -50,11 +53,13 @@ class PackageInfo {
 
   setPackageUri() {
     if (this.packagePath != null) {
+      this.project.hasPackage = false
       return
     }
 
     if (vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length >= 1) {
       this.packagePath = join(vscode.workspace.workspaceFolders[0].uri.fsPath, 'package.json')
+      this.project.hasPackage = true
     }
   }
 
@@ -105,6 +110,7 @@ class PackageInfo {
 
     watcher.onDidDelete(async () => {
       this.packagePath = null
+      this.project.hasPackage = false
       await this.updateStatusBarItem(true)
     })
 
@@ -129,17 +135,17 @@ class PackageInfo {
     let customFormat = this.getCustomFormat()
 
     if (format === DisplayMode.TextOnly) {
-      return `${this.projectInfo.name} ${this.projectInfo.version.toString()}`
+      return `${this.project.name} ${this.project.version.toString()}`
     } else if (customFormat && format === DisplayMode.Custom) {
-      customFormat = customFormat.replace('${name}', this.projectInfo.name)
-      customFormat = customFormat.replace('${version}', this.projectInfo.version.toString())
+      customFormat = customFormat.replace('${name}', this.project.name)
+      customFormat = customFormat.replace('${version}', this.project.version.toString())
 
       // handle non-existent variables
       customFormat = customFormat.replace(/\$\{.*?\}/gi, '')
 
       return customFormat
     } else {
-      return `$(info) ${this.projectInfo.name} ${this.projectInfo.version.toString()}`
+      return `$(info) ${this.project.name} ${this.project.version.toString()}`
     }
   }
 
@@ -165,13 +171,13 @@ class PackageInfo {
       const version = packageJson['version']
 
       if (name) {
-        this.projectInfo.name = name
+        this.project.name = name
       } else {
-        this.projectInfo.name = ''
+        this.project.name = ''
       }
 
       if (version && Keppo.isValid(version)) {
-        this.projectInfo.version.setVersion(version)
+        this.project.version.setVersion(version)
       } else {
         return false
       }
@@ -186,7 +192,7 @@ class PackageInfo {
    * @param {{name: string, version: string}} info
    */
   packageHasChanged(info) {
-    if (info.name !== this.projectInfo.name || info.version !== this.projectInfo.version.toString()) {
+    if (info.name !== this.project.name || info.version !== this.project.version.toString()) {
       return true
     }
 
@@ -220,7 +226,7 @@ class PackageInfo {
     this.statusBarItem.show()
   }
 
-  async init() {
+  init() {
     this.statusBarItem = vscode.window.createStatusBarItem(this.getStatusBarAlignment(), this.getStatusBarPriority())
 
     this.registerWorkspaceHandlers()
@@ -265,31 +271,21 @@ class PackageInfo {
     }
   }
 
-  /** @returns {Promise<boolean>} */
-  async packageFileExists() {
-    if (this.packagePath) {
-      try {
-        await access(this.packagePath)
-        return true
-      } catch {
-        return false
-      }
-    }
-
-    return false
-  }
-
   async openPackageFile() {
-    if (await this.packageFileExists()) {
+    if (this.project.hasPackage) {
       try {
         const packageFile = await vscode.workspace.openTextDocument(this.packagePath)
         vscode.window.showTextDocument(packageFile)
       } catch {
-        vscode.window.showErrorMessage("An error has occurred while opening the project's package.json file.")
+        vscode.window.showErrorMessage(Strings.ERROR_OPEN_FILE)
       }
     } else {
-      vscode.window.showInformationMessage('This project has no package.json file.')
+      this.noPackageMessage()
     }
+  }
+
+  invalidVersionMessage() {
+    vscode.window.showErrorMessage(Strings.ERROR_VERSION_RANGE_INVALID)
   }
 
   /**
@@ -301,53 +297,43 @@ class PackageInfo {
       const document = await vscode.workspace.openTextDocument(this.packagePath)
 
       if (document.isDirty) {
-        vscode.window.showErrorMessage(
-          'The file package.json is dirty, either save it, undo the changes or consider using the setting Auto save of the extension.'
-        )
+        vscode.window.showErrorMessage(Strings.ERROR_PACKAGE_DIRTY)
         return
       }
 
-      if (!this.projectInfo.version) {
-        vscode.window.showErrorMessage('The package.json file does not contain the version property.')
+      if (!this.project.version) {
+        vscode.window.showErrorMessage(Strings.ERROR_NO_VERSION_PROP)
         return
       }
 
-      const oldVersion = this.projectInfo.version.toString()
+      const oldVersion = this.project.version.toString()
 
       if (component === 'major') {
-        if (this.projectInfo.version.canIncreaseMajor(increaseBy)) {
-          this.projectInfo.version.increaseMajor(increaseBy)
+        if (this.project.version.canIncreaseMajor(increaseBy)) {
+          this.project.version.increaseMajor(increaseBy)
         } else {
-          // shouldn't ever reach this
-          vscode.window.showErrorMessage('Value not within the allowed range.')
+          this.invalidVersionMessage()
         }
       } else if (component === 'minor') {
-        if (this.projectInfo.version.canIncreaseMinor(increaseBy)) {
-          this.projectInfo.version.increaseMinor(increaseBy)
+        if (this.project.version.canIncreaseMinor(increaseBy)) {
+          this.project.version.increaseMinor(increaseBy)
         } else {
-          // shouldn't ever reach this
-          vscode.window.showErrorMessage('Value not within the allowed range.')
+          this.invalidVersionMessage()
         }
       } else {
-        if (this.projectInfo.version.canIncreasePatch(increaseBy)) {
-          this.projectInfo.version.increasePatch(increaseBy)
+        if (this.project.version.canIncreasePatch(increaseBy)) {
+          this.project.version.increasePatch(increaseBy)
         } else {
-          // shouldn't ever reach this
-          vscode.window.showErrorMessage('Value not within the allowed range.')
+          this.invalidVersionMessage()
         }
       }
 
       const packageFile = document.getText()
 
-      const replacedFile = packageFile.replace(
-        `"version": "${oldVersion}"`,
-        `"version": "${this.projectInfo.version.toString()}"`
-      )
+      const replacedFile = packageFile.replace(`"version": "${oldVersion}"`, `"version": "${this.project.version.toString()}"`)
 
       if (packageFile === replacedFile) {
-        vscode.window.showErrorMessage(
-          "Couldn't update the version, either there is no version property or the package.json is not formatted correctly."
-        )
+        vscode.window.showErrorMessage(Strings.ERROR_PACKAGE_INVALID)
         return
       }
 
@@ -364,9 +350,7 @@ class PackageInfo {
         })
       }
     } catch {
-      vscode.window.showErrorMessage(
-        "An error has occurred while updating the project's version. Check if your project's package.json file is valid."
-      )
+      vscode.window.showErrorMessage(Strings.ERROR_PACKAGE_INVALID)
     }
   }
 
@@ -379,11 +363,11 @@ class PackageInfo {
     let maxIncrease = 0
 
     if (component === 'major') {
-      maxIncrease = this.projectInfo.version.maxIncreaseMajor()
+      maxIncrease = this.project.version.maxIncreaseMajor()
     } else if (component === 'minor') {
-      maxIncrease = this.projectInfo.version.maxIncreaseMinor()
+      maxIncrease = this.project.version.maxIncreaseMinor()
     } else {
-      maxIncrease = this.projectInfo.version.maxIncreasePatch()
+      maxIncrease = this.project.version.maxIncreasePatch()
     }
 
     return vscode.window.showInputBox({
@@ -394,26 +378,34 @@ class PackageInfo {
         const increaseBy = +value
 
         if (component === 'major') {
-          if (increaseBy > 0 && this.projectInfo.version.canIncreaseMajor(increaseBy)) {
+          if (increaseBy > 0 && this.project.version.canIncreaseMajor(increaseBy)) {
             return null
           } else {
-            return 'Value not within the allowed range.'
+            return Strings.ERROR_VERSION_RANGE_INVALID
           }
         } else if (component === 'minor') {
-          if (increaseBy > 0 && this.projectInfo.version.canIncreaseMinor(increaseBy)) {
+          if (increaseBy > 0 && this.project.version.canIncreaseMinor(increaseBy)) {
             return null
           } else {
-            return 'Value not within the allowed range.'
+            return Strings.ERROR_VERSION_RANGE_INVALID
           }
         } else {
-          if (increaseBy > 0 && this.projectInfo.version.canIncreasePatch(increaseBy)) {
+          if (increaseBy > 0 && this.project.version.canIncreasePatch(increaseBy)) {
             return null
           } else {
-            return 'Value not within the allowed range.'
+            return Strings.ERROR_VERSION_RANGE_INVALID
           }
         }
       },
     })
+  }
+
+  noPackageMessage() {
+    vscode.window.showInformationMessage(Strings.INFO_NO_PACKAGE)
+  }
+
+  hasPackage() {
+    return this.project.hasPackage
   }
 }
 
