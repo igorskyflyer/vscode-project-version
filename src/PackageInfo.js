@@ -370,11 +370,17 @@ class PackageInfo {
       maxIncrease = this.project.version.maxIncreasePatch()
     }
 
+    const maxCount = maxIncrease.toString().length
+
     return vscode.window.showInputBox({
       placeHolder: 'Increase by',
       title: `Increase ${component} version number`,
       prompt: `Value to increase by (min: 1, max: ${maxIncrease})`,
       validateInput: (value) => {
+        if (value.length > maxCount) {
+          return Strings.ERROR_VERSION_RANGE_INVALID
+        }
+
         const increaseBy = +value
 
         if (component === 'major') {
