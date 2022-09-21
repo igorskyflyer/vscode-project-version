@@ -53,7 +53,6 @@ class PackageInfo {
 
   setPackageUri() {
     if (this.packagePath != null) {
-      this.project.hasPackage = true
       return
     }
 
