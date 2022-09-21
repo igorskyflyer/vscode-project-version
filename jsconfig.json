@@ -3,6 +3,9 @@
 		"module": "commonjs",
 		"target": "es6",
 		"checkJs": true,
+		"noImplicitAny": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
 		"lib": [
 			"es6"
 		]
