@@ -2,6 +2,16 @@
 
 <br>
 
+## 1.4.2
+
+- major code refactor, improved performance,
+- limited max length for version increment in InputBox,
+- prevented losing project's `package.json` path when configuration changes,
+- removed redundant code,
+- improved `package.json` file detection in workspace (using `RelativePattern` glob matching).
+
+<br>
+
 ## 1.4.1
 
 - removed redundant `node_modules` package and decreased the extension size by ~37% 🚀,
