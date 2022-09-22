@@ -8,7 +8,8 @@ let extension = null
  * @param {vscode.ExtensionContext} context
  */
 async function activate(context) {
-  const files = await vscode.workspace.findFiles('package.json', 'node_modules', 1)
+  const workspaceFolder = vscode.workspace.workspaceFolders[0]
+  const files = await vscode.workspace.findFiles(new vscode.RelativePattern(workspaceFolder, 'package.json'), 'node_modules', 1)
 
   if (extension == null) {
     extension = new PackageInfo(context)
