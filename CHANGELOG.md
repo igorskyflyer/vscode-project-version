@@ -2,6 +2,12 @@
 
 <br>
 
+## 1.4.3
+
+- fixes an error that occurs when there is no workspace, [#30](https://github.com/igorskyflyer/vscode-project-version/issues/30).
+
+<br>
+
 ## 1.4.2
 
 - major code refactor, improved performance,
