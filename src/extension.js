@@ -8,6 +8,10 @@ let extension = null
  * @param {vscode.ExtensionContext} context
  */
 async function activate(context) {
+  if (!vscode.workspace.workspaceFolders || vscode.workspace.workspaceFolders.length < 1) {
+    return
+  }
+
   const workspaceFolder = vscode.workspace.workspaceFolders[0]
   const files = await vscode.workspace.findFiles(new vscode.RelativePattern(workspaceFolder, 'package.json'), 'node_modules', 1)
 
